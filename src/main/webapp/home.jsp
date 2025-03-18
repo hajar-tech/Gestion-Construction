@@ -40,7 +40,7 @@
                 <h2 class="text-xl font-bold mb-4">Ajouter un Projet</h2>
 
                 <!-- Formulaire -->
-                <form action="AddProjectServlet" method="post">
+                <form action="addProject" method="post">
                     <div class="mb-4">
                         <label class="block text-gray-700">Nom du projet</label>
                         <input type="text" name="NomProjet" class="w-full p-2 border rounded-lg" required>
