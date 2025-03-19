@@ -27,7 +27,12 @@ public class addProjectServlet extends HttpServlet {
 
         Projet projet = new Projet(nom , dateDebutProjet , dateFinProjet ,budgetProjet ,descriptionProjet);
 
-        ProjetDao.insertProject(projet);
+       int idProjet = ProjetDao.insertProject(projet);
+       if (idProjet > 0){
+           resp.sendRedirect("displayProjectName");
+       }else {
+           resp.sendRedirect("home.jsp?error=Erreur lors de la création du projet");
+       }
 
     }
 }

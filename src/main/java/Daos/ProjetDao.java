@@ -45,14 +45,15 @@ public class ProjetDao {
 
   //fonction pour afficher la liste des projet
 
-  public static List displayProjet(){
+  public static List displayProjetDetailsByName(String nomProjet){
         List<Projet> projets = new ArrayList<>();
-        String query = "select * from Projets";
+        String query = "select * from Projets where NomProjet = ?";
 
         try{
             Connection con = DataBaseConnection.getConnection();
-           Statement pst = con.createStatement();
-           ResultSet rs = pst.executeQuery(query);
+           PreparedStatement pst = con.prepareStatement(query);
+           pst.setString(1,nomProjet);
+           ResultSet rs = pst.executeQuery();
            while (rs.next()){
                Projet projet = new Projet(
                        rs.getInt("idProjet"),
@@ -73,7 +74,7 @@ public class ProjetDao {
         return projets;
   }
 
-  public static List<Projet> displayProjectName(){
+  public static List displayProjectName(){
         List<Projet> projetNames = new ArrayList<>();
 
         String query ="select NomProjet  from Projets";
@@ -84,6 +85,7 @@ public class ProjetDao {
             while(rs.next()){
                 Projet projet = new Projet();
                 projet.setNomProjet(rs.getString("NomProjet"));
+                projetNames.add(projet);
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);

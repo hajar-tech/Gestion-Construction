@@ -14,12 +14,14 @@ import java.util.List;
 
 @WebServlet("/displayProjectName")
 public class displayProjectNameServlet extends HttpServlet {
+
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
         List<Projet> projectNames = ProjetDao.displayProjectName();
         req.setAttribute("projectNames",projectNames);
-        req.getRequestDispatcher("homa.jsp").forward(req , resp);
+        req.getRequestDispatcher("home.jsp").forward(req , resp);
 
     }
 }

@@ -11,13 +11,15 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 
-@WebServlet("/displayProject")
+@WebServlet("/displayProjectByName")
 
 public class displayProjetServlet extends HttpServlet {
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        List<Projet> projets = ProjetDao.displayProjet();
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String nomProjet = req.getParameter("nomProjet");
+
+        List<Projet> projets = ProjetDao.displayProjetDetailsByName(nomProjet);
         req.setAttribute("projects", projets);
         req.getRequestDispatcher("afficherProjetDetails.jsp").forward(req , resp);
     }
