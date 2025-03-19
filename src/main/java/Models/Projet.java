@@ -10,6 +10,9 @@ public class Projet {
     private double budget;
     private String descriptionProjet;
 
+
+    public Projet(){}
+
     public Projet(String nomProjet, Date dateDebutProjrt, Date dateFinProjet, double budget, String descriptionProjet) {
         NomProjet = nomProjet;
         this.dateDebutProjrt = dateDebutProjrt;

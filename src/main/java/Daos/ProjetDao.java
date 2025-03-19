@@ -73,4 +73,23 @@ public class ProjetDao {
         return projets;
   }
 
+  public static List<Projet> displayProjectName(){
+        List<Projet> projetNames = new ArrayList<>();
+
+        String query ="select NomProjet  from Projets";
+        try {
+            Connection con = DataBaseConnection.getConnection();
+            Statement stmt = con.createStatement();
+            ResultSet rs = stmt.executeQuery(query);
+            while(rs.next()){
+                Projet projet = new Projet();
+                projet.setNomProjet(rs.getString("NomProjet"));
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+      return projetNames;
+  }
+
 }
