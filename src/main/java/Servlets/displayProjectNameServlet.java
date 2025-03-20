@@ -12,7 +12,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-@WebServlet("/displayProjectName")
+@WebServlet("/")
 public class displayProjectNameServlet extends HttpServlet {
 
 
@@ -21,7 +21,7 @@ public class displayProjectNameServlet extends HttpServlet {
 
         List<Projet> projectNames = ProjetDao.displayProjectName();
         req.setAttribute("projectNames",projectNames);
-        req.getRequestDispatcher("home.jsp").forward(req , resp);
+        req.getRequestDispatcher("index.jsp").forward(req , resp);
 
     }
 }

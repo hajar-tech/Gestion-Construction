@@ -31,7 +31,7 @@ public class addProjectServlet extends HttpServlet {
        if (idProjet > 0){
            resp.sendRedirect("displayProjectName");
        }else {
-           resp.sendRedirect("home.jsp?error=Erreur lors de la création du projet");
+           resp.sendRedirect("index.jsp?error=Erreur lors de la création du projet");
        }
 
     }

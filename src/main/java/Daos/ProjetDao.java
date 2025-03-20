@@ -94,4 +94,40 @@ public class ProjetDao {
       return projetNames;
   }
 
+
+    public static boolean deleteProjet(int idProjet) {
+        String query = "DELETE FROM Projets WHERE idProjet=?";
+        try (Connection conn = DataBaseConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(query)) {
+
+            ps.setInt(1, idProjet);
+
+            return ps.executeUpdate() > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+
+    // Modifier un projet
+    public static boolean updateProjet(Projet projet) {
+        String query = "UPDATE Projets SET NomProjet=?, dateDebutProjet=?, dateFinProjet=?, budget=?, descriptionProjet=? WHERE idProjet=?";
+        try (Connection conn = DataBaseConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(query)) {
+
+            ps.setString(1, projet.getNomProjet());
+            ps.setDate(2, projet.getDateDebutProjrt());
+            ps.setDate(3, projet.getDateFinProjet());
+            ps.setDouble(4, projet.getBudget());
+            ps.setString(5, projet.getDescriptionProjet());
+            ps.setInt(6, projet.getIdProjet());
+
+            return ps.executeUpdate() > 0; // Retourne true si une ligne est affectée
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
 }
