@@ -25,6 +25,22 @@ public class addProjectServlet extends HttpServlet {
        Double budgetProjet = Double.valueOf(budget);
        String descriptionProjet = req.getParameter("descriptionProjet");
 
+       //vérification si la dateDebutProjet est supperieur à la date actuelle
+
+        Date dateActuelle = new Date(System.currentTimeMillis());
+        if(dateDebutProjet.before(dateActuelle)){
+            req.setAttribute("error", "la date de debut ne peut pas etre inferieur  a la date actuelle");
+            resp.sendRedirect("addProjetServlet");
+        }
+
+        //vérification si la dateFinProjet est supperieur à la dateDebutProjet
+
+        if(dateFinProjet.before(dateDebutProjet)){
+            req.setAttribute("error", "la date de Fin projet ne peut pas etre inferieur  a la date debut");
+            resp.sendRedirect("addProjetServlet");
+        }
+
+
         Projet projet = new Projet(nom , dateDebutProjet , dateFinProjet ,budgetProjet ,descriptionProjet);
 
        int idProjet = ProjetDao.insertProject(projet);
