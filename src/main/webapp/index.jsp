@@ -72,45 +72,47 @@
         </section>
 
 </main>
-        <!-- Modal -->
-        <div id="modal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden">
-            <div class="bg-white p-6 rounded-lg shadow-lg w-96">
-                <h2 class="text-xl font-bold mb-4">Ajouter un Projet</h2>
+       <!-- Modal -->
+       <div id="modal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden">
+           <div class="bg-white p-6 rounded-lg shadow-lg w-96">
+               <h2 class="text-xl font-bold mb-4">Ajouter un Projet</h2>
 
-                <!-- Formulaire -->
-                <form action="addProject" method="post">
-                    <div class="mb-4">
-                        <label class="block text-gray-700">Nom du projet</label>
-                        <input type="text" name="NomProjet" class="w-full p-2 border rounded-lg" required>
-                    </div>
+               <!-- Formulaire -->
+               <form id="projectForm" action="addProject" method="post">
+                   <div class="mb-4">
+                       <label class="block text-gray-700">Nom du projet</label>
+                       <input type="text" name="NomProjet" class="w-full p-2 border rounded-lg" required>
+                   </div>
 
-                    <div class="mb-4">
-                        <label class="block text-gray-700">Date de début</label>
-                        <input type="date" name="dateDebutProjet" class="w-full p-2 border rounded-lg" required>
-                    </div>
+                   <div class="mb-4">
+                       <label class="block text-gray-700">Date de début</label>
+                       <input type="date" id="dateDebutProjet" name="dateDebutProjet" class="w-full p-2 border rounded-lg" required>
+                       <span id="errorDateDebut" class="error-message text-red-500"></span>
+                   </div>
 
-                    <div class="mb-4">
-                        <label class="block text-gray-700">Date de fin</label>
-                        <input type="date" name="dateFinProjet" class="w-full p-2 border rounded-lg" required>
-                    </div>
+                   <div class="mb-4">
+                       <label class="block text-gray-700">Date de fin</label>
+                       <input type="date" id="dateFinProjet" name="dateFinProjet" class="w-full p-2 border rounded-lg" required>
+                       <span id="errorDateFin" class="error-message text-red-500"></span>
+                   </div>
 
-                    <div class="mb-4">
-                        <label class="block text-gray-700">Budget</label>
-                        <input type="number" name="budget" class="w-full p-2 border rounded-lg" step="0.01" required>
-                    </div>
+                   <div class="mb-4">
+                       <label class="block text-gray-700">Budget</label>
+                       <input type="number" name="budget" class="w-full p-2 border rounded-lg" step="0.01" required>
+                   </div>
 
-                    <div class="mb-4">
-                        <label class="block text-gray-700">Description</label>
-                        <textarea name="descriptionProjet" class="w-full p-2 border rounded-lg" required></textarea>
-                    </div>
+                   <div class="mb-4">
+                       <label class="block text-gray-700">Description</label>
+                       <textarea name="descriptionProjet" class="w-full p-2 border rounded-lg" required></textarea>
+                   </div>
 
-                    <div class="flex justify-between">
-                        <button type="button" onclick="closeModal()" class="bg-gray-400 text-white px-4 py-2 rounded-lg">Annuler</button>
-                        <button type="submit" class="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 transition">Ajouter</button>
-                    </div>
-                </form>
-            </div>
-        </div>
+                   <div class="flex justify-between">
+                       <button type="button" onclick="closeModal()" class="bg-gray-400 text-white px-4 py-2 rounded-lg">Annuler</button>
+                       <button type="submit" class="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 transition">Ajouter</button>
+                   </div>
+               </form>
+           </div>
+       </div>
 
         <!-- Script pour gérer l'ouverture/fermeture du modal -->
         <script>
@@ -121,6 +123,68 @@
             function closeModal() {
                 document.getElementById("modal").classList.add("hidden");
             }
+
+
+
+            document.addEventListener("DOMContentLoaded", function () {
+                let dateDebutInput = document.getElementById("dateDebutProjet");
+                let dateFinInput = document.getElementById("dateFinProjet");
+                let errorDateDebut = document.getElementById("errorDateDebut");
+                let errorDateFin = document.getElementById("errorDateFin");
+                let form = document.getElementById("projectForm");
+
+                function validateDateDebut() {
+                    let today = new Date();
+                    let selectedDateDebut = new Date(dateDebutInput.value);
+
+                    if (selectedDateDebut < today) {
+                        errorDateDebut.textContent = "La date de début ne peut pas être inférieure à aujourd'hui.";
+                        return false;
+                    } else {
+                        errorDateDebut.textContent = "";
+                        return true;
+                    }
+                }
+
+                function validateDateFin() {
+                    let selectedDateDebut = new Date(dateDebutInput.value);
+                    let selectedDateFin = new Date(dateFinInput.value);
+
+                    if (selectedDateFin <= selectedDateDebut) {
+                        errorDateFin.textContent = "La date de fin doit être supérieure à la date de début.";
+                        return false;
+                    } else {
+                        errorDateFin.textContent = "";
+                        return true;
+                    }
+                }
+
+                // Validation en temps réel
+                dateDebutInput.addEventListener("change", validateDateDebut);
+                dateFinInput.addEventListener("change", validateDateFin);
+
+                // Vérification avant soumission du formulaire
+                form.addEventListener("submit", function (event) {
+                    let isDateDebutValid = validateDateDebut();
+                    let isDateFinValid = validateDateFin();
+
+                    if (!isDateDebutValid || !isDateFinValid) {
+                        event.preventDefault(); // Bloquer l'envoi du formulaire si les dates sont invalides
+                    } else {
+                        closeModal(); // Fermer le modal si tout est valide
+                    }
+                });
+            });
+
+            // Fonctions pour gérer l'affichage du modal
+            function openModal() {
+                document.getElementById("modal").classList.remove("hidden");
+            }
+
+            function closeModal() {
+                document.getElementById("modal").classList.add("hidden");
+            }
+
         </script>
 
 </body>
