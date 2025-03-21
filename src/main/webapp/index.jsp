@@ -52,7 +52,7 @@
             <div class="bg-white shadow-lg rounded-lg p-6 hover:bg-yellow-100 transition-all">
                 <h2 class="text-2xl font-semibold text-center text-yellow-600">Gestion des Ressources</h2>
                 <p class="text-center text-gray-700 mt-4">Gérez les ressources nécessaires pour vos projets, avec suivi des stocks et des fournisseurs.</p>
-                <a href="/gestionRessources" class="block text-center mt-4 text-white bg-yellow-500 hover:bg-yellow-600 rounded-lg py-2">Accéder</a>
+                <a href="gestionRessources.jsp" class="block text-center mt-4 text-white bg-yellow-500 hover:bg-yellow-600 rounded-lg py-2">Accéder</a>
             </div>
         </div>
     </main>

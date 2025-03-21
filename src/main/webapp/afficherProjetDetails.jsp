@@ -49,15 +49,15 @@
                 <p class="text-gray-600"><strong>Budget :</strong> <%= p.getBudget() %> €</p>
                 <p class="text-gray-600"><strong>Description :</strong> <%= p.getDescriptionProjet() %></p>
 
-                <!-- Boutons d'actions -->
+        <!-- Boutons d'actions -->
                 <div class="mt-4 flex space-x-3">
-                    <!-- Bouton Modifier -->
+        <!-- Bouton Modifier -->
                     <button onclick="openModal('<%= p.getIdProjet() %>', '<%= p.getNomProjet() %>', '<%= p.getDateDebutProjrt() %>', '<%= p.getDateFinProjet() %>', '<%= p.getBudget() %>', '<%= p.getDescriptionProjet() %>')"
                             class="bg-blue-500 text-white px-4 py-2 rounded-lg shadow-md hover:bg-blue-600 transition">
                         Modifier
                     </button>
 
-                    <!-- Bouton Supprimer -->
+        <!-- Bouton Supprimer -->
                     <form action="deleteProject" method="post" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer ce projet ?');">
                         <input type="hidden" name="idProjet" value="<%= p.getIdProjet() %>">
                         <button type="submit" class="bg-red-500 text-white px-4 py-2 rounded-lg shadow-md hover:bg-red-600 transition">
@@ -65,7 +65,7 @@
                         </button>
                     </form>
 
-                    <!-- Bouton Ajouter une tâche -->
+        <!-- Bouton Ajouter une tâche -->
                     <form action="addTask" method="get">
                         <input type="hidden" name="idProjet" value="<%= p.getIdProjet() %>">
                         <button type="submit" class="bg-green-500 text-white px-4 py-2 rounded-lg shadow-md hover:bg-green-600 transition">

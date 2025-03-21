@@ -1,6 +1,6 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
 <%@ page pageEncoding="UTF-8" %>
-    <%@ page import="java.util.List" %>
+
 
 <!DOCTYPE html>
 <html lang="fr">
@@ -49,6 +49,43 @@
         </button>
 
 </main>
+
+<!-- Modal pour ajouter une ressource -->
+<div id="modal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden">
+    <div class="bg-white p-6 rounded-lg shadow-lg w-96">
+        <h2 class="text-xl font-semibold mb-4 text-gray-800">Ajouter une ressource</h2>
+        <form action="addRessource" method="post" class="space-y-4">
+            <div>
+                <label class="block text-gray-700 font-medium">Nom de la ressource</label>
+                <input type="text" name="nomRessource" class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+            </div>
+            <div>
+                <label class="block text-gray-700 font-medium">Type de ressource</label>
+                <input type="text" name="typeRessource" class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+            </div>
+            <div>
+                <label class="block text-gray-700 font-medium">Quantité de ressource</label>
+                <input type="number" name="quantiteRessource" class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+            </div>
+            <div class="flex justify-end space-x-4 mt-4">
+                <button type="button" onclick="closeModal()" class="px-4 py-2 bg-gray-400 text-white rounded-md hover:bg-gray-500">Annuler</button>
+                <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">Ajouter</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+  <script>
+    function openModal(){
+    document.getElementById("modal").classList.remove("hidden");
+    }
+
+    function closeModal(){
+     document.getElementById("modal").classList.add("hidden");
+     }
+
+  </script>
 
 </body>
 </html>

@@ -25,6 +25,11 @@ public class Ressource {
         this.quantite = quantite;
     }
 
+    public Ressource(String nomRessource, String typeRessource, int quantite) {
+        this.nomRessource = nomRessource;
+        this.typeRessource = typeRessource;
+        this.quantite = quantite;
+    }
     //getters && setters
 
 
