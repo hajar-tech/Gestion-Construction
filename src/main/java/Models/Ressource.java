@@ -18,8 +18,9 @@ public class Ressource {
         this.quantite = quantite;
     }
 
-    public Ressource(int idFournisseur, String nomRessource, String typeRessource, int quantite) {
-        this.idFournisseur = idFournisseur;
+
+    public Ressource(int idRessource, String nomRessource, String typeRessource, int quantite) {
+        this.idRessource = idRessource;
         this.nomRessource = nomRessource;
         this.typeRessource = typeRessource;
         this.quantite = quantite;

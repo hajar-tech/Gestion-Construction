@@ -33,57 +33,56 @@
         </div>
     </nav>
 
-<%
-   List<Projet> projets = (List<Projet>) request.getAttribute("projects");
-   if (projets != null && !projets.isEmpty()) {
-%>
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 p-6">
-        <% for (Projet p : projets) { %>
-            <div class="bg-white shadow-lg rounded-xl p-6 border border-gray-200">
-                <h2 class="text-2xl font-bold text-black mb-3">
-                    <%= p.getNomProjet() %>
-                </h2>
+    <div class="container mx-auto">
 
-                <p class="text-gray-600"><strong>Date Début :</strong> <%= p.getDateDebutProjrt() %></p>
-                <p class="text-gray-600"><strong>Date Fin :</strong> <%= p.getDateFinProjet() %></p>
-                <p class="text-gray-600"><strong>Budget :</strong> <%= p.getBudget() %> €</p>
-                <p class="text-gray-600"><strong>Description :</strong> <%= p.getDescriptionProjet() %></p>
 
-        <!-- Boutons d'actions -->
-                <div class="mt-4 flex space-x-3">
-        <!-- Bouton Modifier -->
+        <%
+            List<Projet> projets = (List<Projet>) request.getAttribute("projects");
+            if (projets != null && !projets.isEmpty()) {
+        %>
+        <ul class="bg-white mt-3 shadow-md rounded-lg divide-y divide-gray-200">
+            <% for (Projet p : projets) { %>
+            <li class="p-4 flex items-center justify-between hover:bg-gray-100">
+                <div>
+                    <h2 class="text-lg font-semibold text-black"><%= p.getNomProjet() %></h2>
+                    <p class="text-gray-600 mt-3 text-sm"><strong>Date Début :</strong> <%= p.getDateDebutProjrt() %></p>
+                    <p class="text-gray-600 mt-3 text-sm"><strong>Date Fin :</strong> <%= p.getDateFinProjet() %></p>
+                    <p class="text-gray-600 mt-3 text-sm"><strong>Budget :</strong> <%= p.getBudget() %> €</p>
+                    <p class="text-gray-600 mt-3 text-sm"><strong>Description :</strong> <%= p.getDescriptionProjet() %></p>
+                </div>
+
+                <!-- Actions -->
+                <div class="flex space-x-3">
+                    <!-- Modifier -->
                     <button onclick="openModal('<%= p.getIdProjet() %>', '<%= p.getNomProjet() %>', '<%= p.getDateDebutProjrt() %>', '<%= p.getDateFinProjet() %>', '<%= p.getBudget() %>', '<%= p.getDescriptionProjet() %>')"
-                            class="bg-blue-500 text-white px-4 py-2 rounded-lg shadow-md hover:bg-blue-600 transition">
-                        Modifier
+                        class="text-blue-500 hover:text-blue-700 transition">
+                        ✏️
                     </button>
 
-        <!-- Bouton Supprimer -->
+                    <!-- Supprimer -->
                     <form action="deleteProject" method="post" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer ce projet ?');">
                         <input type="hidden" name="idProjet" value="<%= p.getIdProjet() %>">
-                        <button type="submit" class="bg-red-500 text-white px-4 py-2 rounded-lg shadow-md hover:bg-red-600 transition">
-                            Supprimer
+                        <button type="submit" class="text-red-500 hover:text-red-700 transition">
+                            🗑️
                         </button>
                     </form>
 
-        <!-- Bouton Ajouter une tâche -->
+                    <!-- Ajouter une tâche -->
                     <form action="addTask" method="get">
                         <input type="hidden" name="idProjet" value="<%= p.getIdProjet() %>">
-                        <button type="submit" class="bg-green-500 text-white px-4 py-2 rounded-lg shadow-md hover:bg-green-600 transition">
-                            Ajouter Tâche
+                        <button type="submit" class="text-green-500 hover:text-green-700 transition">
+                            ➕
                         </button>
                     </form>
                 </div>
-            </div>
+            </li>
+            <% } %>
+        </ul>
+
+        <% } else { %>
+            <p class="text-center text-gray-500 text-lg">Aucun projet trouvé.</p>
         <% } %>
     </div>
-<%
-   } else {
-%>
-    <p class="text-center text-gray-500 text-lg">Aucun projet trouvé.</p>
-<%
-   }
-%>
-
 
 
 <!-- Modale cachée au début -->

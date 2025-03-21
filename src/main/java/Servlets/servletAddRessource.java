@@ -24,7 +24,7 @@ public class servletAddRessource extends HttpServlet {
         int result = ressourcesDao.addRessource(ressource);
 
         if (result > 0){
-            resp.sendRedirect("gestionRessources.jsp");
+            resp.sendRedirect("displayRessource");
         }
 
     }

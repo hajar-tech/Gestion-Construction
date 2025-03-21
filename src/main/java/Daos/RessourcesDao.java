@@ -2,16 +2,14 @@ package Daos;
 
 import Models.Ressource;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class RessourcesDao {
 
     int idFournisseur = 1;
+
     public int addRessource (Ressource ressource){
         int result = 0;
 
@@ -42,14 +40,15 @@ public class RessourcesDao {
     public static List displayRessource (){
         List<Ressource> ressources = new ArrayList<>();
 
-        String sql = "select nomRessource , typeRessource , quantite from Ressources";
+        String sql = "select idRessource , nomRessource , typeRessource , quantite from Ressources;";
 
         try{
             Connection con = DataBaseConnection.getConnection();
-            PreparedStatement pst = con.prepareStatement(sql);
-            ResultSet rs = pst.executeQuery();
+            PreparedStatement st = con.prepareStatement(sql);
+            ResultSet rs = st.executeQuery();
             while (rs.next()){
                 Ressource ressource = new Ressource(
+                        rs.getInt("idRessource"),
                         rs.getString("nomRessource"),
                         rs.getString("typeRessource"),
                         rs.getInt("quantite")
@@ -62,5 +61,32 @@ public class RessourcesDao {
         }
 
         return  ressources;
+    }
+
+
+
+    public static int deleteRessource (int idRessource){
+        int deleteSuccess = 0;
+        String sql ="delete from Ressources where idRessource = ?";
+        try {
+            Connection con = DataBaseConnection.getConnection();
+            PreparedStatement pst = con.prepareStatement(sql);
+            pst.setInt(1,idRessource);
+
+            deleteSuccess = pst.executeUpdate();
+
+            if (deleteSuccess > 0){
+                System.out.println("supprission valide");
+            }else {
+                System.out.println("supprission invalide");
+            }
+
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return deleteSuccess;
+
     }
 }

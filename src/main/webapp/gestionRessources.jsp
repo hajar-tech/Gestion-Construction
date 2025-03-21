@@ -1,7 +1,7 @@
-<%@ page contentType="text/html; charset=UTF-8" %>
+<%@ page contentType="text/html; charset=UTF-8" language="java" %>
 <%@ page pageEncoding="UTF-8" %>
-
-<%@ page import="Models.Ressource , java.util.*"%>
+<%@ page import="java.util.List" %>
+<%@ page import="Models.Ressource"%>
 
 
 <!DOCTYPE html>
@@ -11,9 +11,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home - Gestion de Projets</title>
    <script src="https://cdn.tailwindcss.com"></script>
+   <link href="https://unpkg.com/boxicons@2.1.1/css/boxicons.min.css" rel="stylesheet">
+
    <style>
   .bodyElemnt {
-      background-image: url("Images/Download premium image of Construction architecture building development by Jigsaw about background, construction, sky, person, and watercolour 12093481.jpg");
+      background-image: url("Images/télécharger.jpg");
       background-size: cover;
       background-position: center;
       background-repeat: no-repeat;
@@ -25,19 +27,20 @@
 <body class=" bodyElemnt bg-gray-100">
 
     <!-- Navbar -->
-    <nav class="bg-transparent backdrop-blur-lg p-4 shadow-lg border-b border-gray-300/50">
-        <div class="container mx-auto flex justify-between items-center">
+    <nav class="bg-transparent backdrop-blur-lg p-4 mt-4  shadow-lg border-b border-gray-300/50">
+        <div class="container mx-auto  flex justify-between items-center">
             <!-- Logo -->
-            <a href="home.jsp" class="text-black text-2xl font-bold hover:text-gray-700 transition">
+            <a href="index.jsp" class="text-black text-2xl font-bold hover:text-gray-700 transition">
                 Construction<span class="text-yellow-500">Xpert</span>
             </a>
 
             <!-- Liens de navigation -->
             <div class="flex space-x-6">
-                <a href="#" class="text-black text-xl font-medium hover:text-yellow-500 transition">
-                    Contact Us
-                </a>
-                <a href="logoutServlet" class="bg-red-500 px-4 py-2 rounded-lg text-white hover:bg-red-600 transition">
+                 <!-- Bouton pour ouvrir le modal -->
+                        <button onclick="openModal()" class="bg-black text-white px-4 py-2 rounded-lg shadow-md hover:bg-yellow-600 transition">
+                            Ajouter Ressource
+                        </button>
+                <a href="logoutServlet" class="bg-black px-4 py-2 rounded-lg text-white hover:bg-red-600 transition">
                     Logout
                 </a>
             </div>
@@ -45,39 +48,62 @@
     </nav>
 
 <main class="main">
-    <!-- Bouton pour ouvrir le modal -->
-        <button onclick="openModal()" class="bg-green-500 text-white px-6 py-3 m-3 rounded-lg shadow-md hover:bg-blue-600 transition">
-            Ajouter Projet
-        </button>
-
 
    <!-- afficher la list des ressources-->
 
 
-   <table>
-        <thead>
-         <tr>
-            <th>nom de ressource</th>
-            <th>type de ressource</th>
-            <th>quantite de ressource</th>
-         </tr>
-        </thead>
-        <tbody>
+      <div class="container mx-auto mb-3 mt-7">
 
-   <%
-      List<Ressource> ressources = (List<Ressource>) request.getAttribute("ressources");
+              <%
+                  List<Ressource> ressources = (List<Ressource>) request.getAttribute("ressources");
+                  if (ressources == null || ressources.isEmpty()) {
+              %>
+                  <p class="text-red-500">Aucune ressource disponible.</p>
+              <%
+                  } else {
+              %>
 
-      if(ressources != null){
-      for(Ressource r : ressources ){
-   %>
-        <tr>
-            <td>><%= r.getNomRessource()%></td>
-            <td>><%= r.getTypeRessource()%></td>
-            <td>><%= r.getQuantite()%></td>
-        </tr>
-   <% } }%>
-        </tbody>
-   </table>
+             <div class="overflow-x-auto bg-white shadow-md rounded-lg p-6">
+              <h1 class="text-2xl font-bold text-gray-800 mb-4">Liste des Ressources</h1>
+                 <!-- Liste pour l'affichage des ressources -->
+                 <ul class="space-y-4">
+                     <% for (Ressource r : ressources) { %>
+                         <li class="flex flex-col md:flex-row items-start md:items-center justify-between p-4 bg-gray-50 rounded-lg shadow-sm hover:bg-gray-100">
+                             <!-- Nom de la ressource -->
+                             <div class="flex-1 text-lg font-semibold">
+                                 <%= r.getNomRessource() %>
+                             </div>
+                             <!-- Type de la ressource -->
+                             <div class="flex-1 text-sm text-gray-600">
+                                 <%= r.getTypeRessource() %>
+                             </div>
+                             <!-- Quantité de la ressource -->
+                             <div class="flex-1 text-sm text-gray-600">
+                                 <%= r.getQuantite() %>
+                             </div>
+                              <!-- Boutons Edit et Delete -->
+                                                  <div class="flex space-x-4 mt-2 md:mt-0">
+                                                      <!-- Bouton Edit -->
+                                                      <button class="text-blue-500 hover:text-blue-700 transition-colors">
+                                                          <i class="bx bx-edit-alt text-xl"></i> Edit
+                                                      </button>
+
+                                                      <!-- Bouton Delete -->
+                                                      <form action="deleteRessource" method="post" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cette ressource ?');">
+                                                          <input type="hidden" name="idRessource" value="<%= r.getIdRessource() %>">
+                                                          <button type="submit" class="text-red-500 hover:text-red-700 transition-colors">
+                                                              <i class="bx bx-trash text-xl"></i> Delete
+                                                          </button>
+                                                      </form>
+                                                  </div>
+                         </li>
+                     <% } %>
+                 </ul>
+             </div>
+
+
+              <% } %>
+          </div>
 
 </main>
 

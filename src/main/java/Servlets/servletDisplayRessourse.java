@@ -1,5 +1,6 @@
 package Servlets;
 
+import Daos.RessourcesDao;
 import Models.Ressource;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -16,8 +17,14 @@ import java.util.List;
 public class servletDisplayRessourse extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        List<Ressource> ressources = new ArrayList<>();
+        List <Ressource> ressources = RessourcesDao.displayRessource();
+        if (ressources!=null && !ressources.isEmpty()){
+            System.out.println("list is not empty");
+        }
+        else {
+            System.out.println("list is empty");
+        }
         req.setAttribute("ressources", ressources);
-        req.getRequestDispatcher("displayRessource").forward(req , resp);
+        req.getRequestDispatcher("gestionRessources.jsp").forward(req, resp);
     }
 }
