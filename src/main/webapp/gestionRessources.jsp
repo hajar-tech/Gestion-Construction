@@ -81,21 +81,23 @@
                              <div class="flex-1 text-sm text-gray-600">
                                  <%= r.getQuantite() %>
                              </div>
-                              <!-- Boutons Edit et Delete -->
-                                                  <div class="flex space-x-4 mt-2 md:mt-0">
-                                                      <!-- Bouton Edit -->
-                                                      <button class="text-blue-500 hover:text-blue-700 transition-colors">
-                                                          <i class="bx bx-edit-alt text-xl"></i> Edit
-                                                      </button>
+      <!-- Boutons Edit et Delete -->
+                              <div class="flex space-x-4 mt-2 md:mt-0">
+                              <!-- Bouton Edit -->
+                              <button onclick="openModalEdit('<%= r.getIdRessource() %>','<%= r.getNomRessource() %>','<%= r.getTypeRessource() %>','<%= r.getQuantite() %>')"
+                                    class="text-blue-500 hover:text-blue-700 transition-colors">
+                                    <i class="bx bx-edit-alt text-xl"></i> Edit
+                              </button>
 
-                                                      <!-- Bouton Delete -->
-                                                      <form action="deleteRessource" method="post" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cette ressource ?');">
-                                                          <input type="hidden" name="idRessource" value="<%= r.getIdRessource() %>">
-                                                          <button type="submit" class="text-red-500 hover:text-red-700 transition-colors">
-                                                              <i class="bx bx-trash text-xl"></i> Delete
-                                                          </button>
-                                                      </form>
-                                                  </div>
+      <!-- Bouton Delete -->
+
+                              <form action="deleteRessource" method="post" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cette ressource ?');">
+                              <input type="hidden" name="idRessource" value="<%= r.getIdRessource() %>">
+                              <button type="submit" class="text-red-500 hover:text-red-700 transition-colors">
+                                   <i class="bx bx-trash text-xl"></i> Delete
+                               </button>
+                              </form>
+                              </div>
                          </li>
                      <% } %>
                  </ul>
@@ -133,6 +135,34 @@
 </div>
 
 
+
+
+<!-- Modal pour editer une ressource -->
+<div id="modaledit" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden">
+    <div class="bg-white p-6 rounded-lg shadow-lg w-96">
+        <h2 class="text-xl font-semibold mb-4 text-gray-800">modifier une ressource</h2>
+        <form action="editRessource" method="post" class="space-y-4">
+           <input type ="nombre" id="idRessource" name="idRessource" class="hidden">
+            <div>
+                <label class="block text-gray-700 font-medium">Nom de la ressource</label>
+                <input type="text" id="nom" name="nomRessourceEditer" class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+            </div>
+            <div>
+                <label class="block text-gray-700 font-medium">Type de ressource</label>
+                <input type="text" id="type" name="typeRessourceEditer" class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+            </div>
+            <div>
+                <label class="block text-gray-700 font-medium">Quantité de ressource</label>
+                <input type="number" id="quantite" name="quantiteRessourceEditer" class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+            </div>
+            <div class="flex justify-end space-x-4 mt-4">
+                <button type="button" onclick="closeModalEdit()" class="px-4 py-2 bg-gray-400 text-white rounded-md hover:bg-gray-500">Annuler</button>
+                <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">modifier</button>
+            </div>
+        </form>
+    </div>
+</div>
+
   <script>
     function openModal(){
     document.getElementById("modal").classList.remove("hidden");
@@ -140,6 +170,18 @@
 
     function closeModal(){
      document.getElementById("modal").classList.add("hidden");
+     }
+
+     function openModalEdit(id , nom , type , quantite){
+       document.getElementById("idRessource").value = id;
+       document.getElementById("nom").value = nom;
+       document.getElementById("type").value = type;
+       document.getElementById("quantite").value = quantite;
+       document.getElementById("modaledit").classList.remove("hidden");
+     }
+
+     function closeModalEdit(){
+       document.getElementById("modaledit").classList.add("hidden");
      }
 
   </script>

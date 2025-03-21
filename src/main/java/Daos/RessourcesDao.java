@@ -89,4 +89,26 @@ public class RessourcesDao {
         return deleteSuccess;
 
     }
+
+
+    public static boolean editRessource (Ressource ressource) {
+
+        String sql = "update Ressources set nomRessource = ? , typeRessource = ? , quantite = ? where idRessource = ?";
+        try{
+            Connection con = DataBaseConnection.getConnection();
+            PreparedStatement pst = con.prepareStatement(sql);
+            pst.setString(1,ressource.getNomRessource());
+            pst.setString(2, ressource.getTypeRessource());
+            pst.setInt(3,ressource.getQuantite());
+            pst.setInt(4, ressource.getIdRessource());
+
+           return pst.executeUpdate() > 0;
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+        return false;
+
+    }
 }
