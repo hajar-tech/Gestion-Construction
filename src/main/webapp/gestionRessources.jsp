@@ -1,6 +1,8 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
 <%@ page pageEncoding="UTF-8" %>
 
+<%@ page import="Models.Ressource , java.util.*"%>
+
 
 <!DOCTYPE html>
 <html lang="fr">
@@ -47,6 +49,35 @@
         <button onclick="openModal()" class="bg-green-500 text-white px-6 py-3 m-3 rounded-lg shadow-md hover:bg-blue-600 transition">
             Ajouter Projet
         </button>
+
+
+   <!-- afficher la list des ressources-->
+
+
+   <table>
+        <thead>
+         <tr>
+            <th>nom de ressource</th>
+            <th>type de ressource</th>
+            <th>quantite de ressource</th>
+         </tr>
+        </thead>
+        <tbody>
+
+   <%
+      List<Ressource> ressources = (List<Ressource>) request.getAttribute("ressources");
+
+      if(ressources != null){
+      for(Ressource r : ressources ){
+   %>
+        <tr>
+            <td>><%= r.getNomRessource()%></td>
+            <td>><%= r.getTypeRessource()%></td>
+            <td>><%= r.getQuantite()%></td>
+        </tr>
+   <% } }%>
+        </tbody>
+   </table>
 
 </main>
 
