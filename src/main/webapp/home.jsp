@@ -27,7 +27,7 @@
     <nav class="bg-transparent backdrop-blur-lg p-4 shadow-lg border-b border-gray-300/50">
         <div class="container mx-auto flex justify-between items-center">
             <!-- Logo -->
-            <a href="home.jsp" class="text-black text-2xl font-bold hover:text-gray-700 transition">
+            <a href="index.jsp" class="text-black text-2xl font-bold hover:text-gray-700 transition">
                 Construction<span class="text-yellow-500">Xpert</span>
             </a>
 

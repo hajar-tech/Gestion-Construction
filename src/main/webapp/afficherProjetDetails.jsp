@@ -116,7 +116,93 @@
     </div>
 </div>
 
+
+
+<!-- Modale ajoute de tache -->
+<div id="taskModal" class="fixed inset-0 bg-gray-900 bg-opacity-50 hidden flex items-center justify-center">
+    <div class="bg-white p-6 rounded-lg shadow-lg w-1/3">
+        <h2 class="text-2xl font-bold mb-4">Ajouter une Tâche</h2>
+        <form action="addTask" method="post">
+            <input type="hidden" name="idProjet" id="taskProjectId">
+
+            <label>Nom de la tâche :</label>
+            <input type="text" name="nomTache" required class="w-full border p-2 rounded">
+
+            <label>Date de début :</label>
+            <input type="date" name="dateDebut" required class="w-full border p-2 rounded">
+
+            <label>Date de fin :</label>
+            <input type="date" name="dateFin" required class="w-full border p-2 rounded">
+
+            <label>Ressources :</label>
+            <select name="ressources" multiple class="w-full border p-2 rounded">
+                <%-- Dynamique : Liste des ressources disponibles --%>
+                <% List<Ressource> ressources = (List<Ressource>) request.getAttribute("ressources"); %>
+                <% for (Ressource res : ressources) { %>
+                    <option value="<%= res.getIdRessource() %>"><%= res.getNomRessource() %> - Quantité: <%= res.getQuantite() %></option>
+                <% } %>
+            </select>
+
+            <div class="mt-4 flex justify-end space-x-3">
+                <button type="button" onclick="closeTaskModal()" class="bg-gray-400 px-4 py-2 rounded-lg">Annuler</button>
+                <button type="submit" class="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600">Ajouter</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+<!-- Modale pour ajouter une tâche -->
+<div id="modalAjoutTache" class="fixed inset-0 bg-gray-900 bg-opacity-50 hidden flex items-center justify-center">
+    <div class="bg-white p-6 rounded-lg shadow-lg w-1/3">
+        <h2 class="text-2xl font-bold mb-4">Ajouter une Tâche</h2>
+
+        <form action="AjoutTacheServlet" method="post">
+            <input type="hidden" name="idProjet" id="idProjet" value="<%= request.getParameter("idProjet") %>">
+
+            <label class="block">Description :</label>
+            <input type="text" name="description" class="w-full border p-2 rounded" required>
+
+            <label class="block mt-2">Date Début :</label>
+            <input type="date" name="dateDebut" class="w-full border p-2 rounded" required>
+
+            <label class="block mt-2">Date Fin :</label>
+            <input type="date" name="dateFin" class="w-full border p-2 rounded" required>
+
+            <!-- Sélection des ressources -->
+            <label class="block mt-2">Sélectionner des ressources :</label>
+            <div id="listeRessources">
+                <% List<Ressource> ressources = (List<Ressource>) request.getAttribute("ressources");
+                   if (ressources != null) {
+                       for (Ressource r : ressources) { %>
+                           <div class="flex items-center space-x-2">
+                               <input type="checkbox" name="idRessource" value="<%= r.getIdRessource() %>">
+                               <span><%= r.getNomRessource() %> (Disponible: <%= r.getQuantiteDisponible() %>)</span>
+                               <input type="number" name="quantite_<%= r.getIdRessource() %>" class="w-20 border p-1 rounded" min="1" placeholder="Qté">
+                           </div>
+                <%     }
+                   } %>
+            </div>
+
+            <div class="mt-4 flex justify-end space-x-3">
+                <button type="button" class="bg-gray-400 px-4 py-2 rounded-lg" onclick="closeModal()">Annuler</button>
+                <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600">Ajouter</button>
+            </div>
+        </form>
+    </div>
+</div>
+
 <script>
+    function openModalAjoutTache() {
+        document.getElementById("modalAjoutTache").classList.remove("hidden");
+    }
+
+    function closeModal() {
+        document.getElementById("modalAjoutTache").classList.add("hidden");
+    }
+
+
+
     function openModal(id, nom, dateDebut, dateFin, budget, description) {
         document.getElementById("editId").value = id;
         document.getElementById("editNom").value = nom;
