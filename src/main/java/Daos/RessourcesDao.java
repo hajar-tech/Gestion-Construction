@@ -124,4 +124,28 @@ public class RessourcesDao {
             e.printStackTrace();
         }
     }
+
+
+
+    public List<Ressource> getAllRessources() {
+        List<Ressource> ressources = new ArrayList<>();
+        String sql = "SELECT * FROM Ressources";
+
+        try (   Connection connection = DataBaseConnection.getConnection();
+                PreparedStatement ps = connection.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+
+            while (rs.next()) {
+                Ressource ressource = new Ressource(
+                        rs.getInt("idRessource"),
+                        rs.getString("nomRessource"),
+                        rs.getInt("quantite")
+                );
+                ressources.add(ressource);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return ressources;
+    }
 }

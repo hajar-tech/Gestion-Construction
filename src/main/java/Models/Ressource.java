@@ -18,6 +18,11 @@ public class Ressource {
         this.quantite = quantite;
     }
 
+    public Ressource(int idRessource, String nomRessource, int quantite) {
+        this.idRessource = idRessource;
+        this.nomRessource = nomRessource;
+        this.quantite = quantite;
+    }
 
     public Ressource(int idRessource, String nomRessource, String typeRessource, int quantite) {
         this.idRessource = idRessource;

@@ -114,7 +114,7 @@
            </div>
        </div>
 
-        <!-- Script pour gérer l'ouverture/fermeture du modal -->
+        <!-- Script pour gérer ouverture/fermeture du modal -->
         <script>
             function openModal() {
                 document.getElementById("modal").classList.remove("hidden");

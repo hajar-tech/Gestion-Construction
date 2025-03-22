@@ -1,8 +1,13 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 
-    <%@ page import = "Models.Projet , java.util.*" %>
+    <%@ page import = "Models.Projet ,Models.Ressource , java.util.*" %>
     <%@ page import="java.util.List" %>
+
+
+    <%
+        List<Ressource> ressources = (List<Ressource>) request.getAttribute("ressources");
+    %>
 
 <!DOCTYPE html>
 <html lang="fr">
@@ -67,13 +72,17 @@
                         </button>
                     </form>
 
-                    <!-- Ajouter une tâche -->
-                    <form action="addTask" method="get">
-                        <input type="hidden" name="idProjet" value="<%= p.getIdProjet() %>">
-                        <button type="submit" class="text-green-500 hover:text-green-700 transition">
+
+
+                    <!-- Bouton pour ouvrir la modale ajoute tache -->
+
+                    <form action="loadResources" method="get">
+                        <button type="submit" class="text-green-500 hover:text-green-700 transition" onclick="openModalAjoutTache('<%= p.getIdProjet() %>')">
                             ➕
                         </button>
                     </form>
+
+
                 </div>
             </li>
             <% } %>
@@ -85,7 +94,7 @@
     </div>
 
 
-<!-- Modale cachée au début -->
+<!-- Modale modifier un projet -->
 <div id="editModal" class="fixed inset-0 bg-gray-900 bg-opacity-50 hidden flex items-center justify-center">
     <div class="bg-white p-6 rounded-lg shadow-lg w-1/3">
         <h2 class="text-2xl font-bold mb-4">Modifier Projet</h2>
@@ -118,38 +127,7 @@
 
 
 
-<!-- Modale ajoute de tache -->
-<div id="taskModal" class="fixed inset-0 bg-gray-900 bg-opacity-50 hidden flex items-center justify-center">
-    <div class="bg-white p-6 rounded-lg shadow-lg w-1/3">
-        <h2 class="text-2xl font-bold mb-4">Ajouter une Tâche</h2>
-        <form action="addTask" method="post">
-            <input type="hidden" name="idProjet" id="taskProjectId">
 
-            <label>Nom de la tâche :</label>
-            <input type="text" name="nomTache" required class="w-full border p-2 rounded">
-
-            <label>Date de début :</label>
-            <input type="date" name="dateDebut" required class="w-full border p-2 rounded">
-
-            <label>Date de fin :</label>
-            <input type="date" name="dateFin" required class="w-full border p-2 rounded">
-
-            <label>Ressources :</label>
-            <select name="ressources" multiple class="w-full border p-2 rounded">
-                <%-- Dynamique : Liste des ressources disponibles --%>
-                <% List<Ressource> ressources = (List<Ressource>) request.getAttribute("ressources"); %>
-                <% for (Ressource res : ressources) { %>
-                    <option value="<%= res.getIdRessource() %>"><%= res.getNomRessource() %> - Quantité: <%= res.getQuantite() %></option>
-                <% } %>
-            </select>
-
-            <div class="mt-4 flex justify-end space-x-3">
-                <button type="button" onclick="closeTaskModal()" class="bg-gray-400 px-4 py-2 rounded-lg">Annuler</button>
-                <button type="submit" class="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600">Ajouter</button>
-            </div>
-        </form>
-    </div>
-</div>
 
 
 <!-- Modale pour ajouter une tâche -->
@@ -157,11 +135,11 @@
     <div class="bg-white p-6 rounded-lg shadow-lg w-1/3">
         <h2 class="text-2xl font-bold mb-4">Ajouter une Tâche</h2>
 
-        <form action="AjoutTacheServlet" method="post">
-            <input type="hidden" name="idProjet" id="idProjet" value="<%= request.getParameter("idProjet") %>">
+        <form action="addTaskServlet" method="post">
+            <input type="hidden" name="idProjet" id="idProjet">
 
-            <label class="block">Description :</label>
-            <input type="text" name="description" class="w-full border p-2 rounded" required>
+            <label class="block">Description de la Tâche :</label>
+            <input type="text" name="descriptionTache" class="w-full border p-2 rounded" required>
 
             <label class="block mt-2">Date Début :</label>
             <input type="date" name="dateDebut" class="w-full border p-2 rounded" required>
@@ -169,19 +147,18 @@
             <label class="block mt-2">Date Fin :</label>
             <input type="date" name="dateFin" class="w-full border p-2 rounded" required>
 
-            <!-- Sélection des ressources -->
-            <label class="block mt-2">Sélectionner des ressources :</label>
-            <div id="listeRessources">
-                <% List<Ressource> ressources = (List<Ressource>) request.getAttribute("ressources");
-                   if (ressources != null) {
-                       for (Ressource r : ressources) { %>
-                           <div class="flex items-center space-x-2">
-                               <input type="checkbox" name="idRessource" value="<%= r.getIdRessource() %>">
-                               <span><%= r.getNomRessource() %> (Disponible: <%= r.getQuantiteDisponible() %>)</span>
-                               <input type="number" name="quantite_<%= r.getIdRessource() %>" class="w-20 border p-1 rounded" min="1" placeholder="Qté">
-                           </div>
-                <%     }
-                   } %>
+            <label class="block mt-2">Ressources nécessaires :</label>
+            <div id="ressourceContainer">
+                <% if (ressources != null) {
+                    for (Ressource r : ressources) { %>
+                        <div class="flex items-center space-x-2">
+                            <input type="checkbox" name="ressources" value="<%= r.getIdRessource() %>">
+                            <span><%= r.getNomRessource() %> (Dispo: <%= r.getQuantite() %>)</span>
+                            <input type="number" name="quantite_<%= r.getIdRessource() %>" min="1" max="<%= r.getQuantite() %>" placeholder="Quantité" class="border p-1 w-20">
+                        </div>
+                <% } } else { %>
+                    <p>Aucune ressource disponible.</p>
+                <% } %>
             </div>
 
             <div class="mt-4 flex justify-end space-x-3">
@@ -192,18 +169,12 @@
     </div>
 </div>
 
+
 <script>
-    function openModalAjoutTache() {
-        document.getElementById("modalAjoutTache").classList.remove("hidden");
-    }
-
-    function closeModal() {
-        document.getElementById("modalAjoutTache").classList.add("hidden");
-    }
 
 
 
-    function openModal(id, nom, dateDebut, dateFin, budget, description) {
+function openModal(id, nom, dateDebut, dateFin, budget, description) {
         document.getElementById("editId").value = id;
         document.getElementById("editNom").value = nom;
         document.getElementById("editDateDebut").value = dateDebut;
@@ -216,6 +187,21 @@
     function closeModal() {
         document.getElementById("editModal").classList.add("hidden");
     }
+    function openModalAjoutTache(idProjet) {
+        document.getElementById("modalAjoutTache").classList.remove("hidden");
+        document.getElementById("idProjet").value = idProjet;  // Remplit le champ caché avec l'ID du projet
+    }
+
+    function closeModalAjouteTache() {
+        document.getElementById("modalAjoutTache").classList.add("hidden");
+    }
+
+
+
+
+
+
+
 </script>
 
 
