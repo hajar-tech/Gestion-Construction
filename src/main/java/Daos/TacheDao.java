@@ -9,7 +9,7 @@ public class TacheDao {
     public static int addTache (Tache tache){
         int idTache =0;
 
-        String sql = "INSERT INTO Taches (descriptionTache, dateDebutTache, dateFinTache, idProjet) VALUES (?,?, ?, ?)";
+        String sql = "INSERT INTO Tache (descriptionTache, dateDebutTache, dateFinTache, idProjet) VALUES (?,?, ?, ?)";
         try{
             Connection con = DataBaseConnection.getConnection();
             PreparedStatement pst = con.prepareStatement(sql , Statement.RETURN_GENERATED_KEYS);
@@ -23,12 +23,13 @@ public class TacheDao {
             if(rs.next()){
                 idTache = rs.getInt(1);
             }
-         
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
         return idTache ;
+
+
 
     }
 }
