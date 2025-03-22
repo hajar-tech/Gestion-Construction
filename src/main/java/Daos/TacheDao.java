@@ -1,15 +1,17 @@
 package Daos;
 
 import Models.Tache;
+import Models.TacheRessource;
 
 import java.sql.*;
+import java.util.List;
 
 public class TacheDao {
 
     public static int addTache (Tache tache){
         int idTache =0;
 
-        String sql = "INSERT INTO Tache (descriptionTache, dateDebutTache, dateFinTache, idProjet) VALUES (?,?, ?, ?)";
+        String sql = "INSERT INTO Taches (descriptionTache, dateDebutTache, dateFinTache, idProjet) VALUES (?,?, ?, ?)";
         try{
             Connection con = DataBaseConnection.getConnection();
             PreparedStatement pst = con.prepareStatement(sql , Statement.RETURN_GENERATED_KEYS);
@@ -28,8 +30,22 @@ public class TacheDao {
         }
 
         return idTache ;
+    }
 
 
-
+    public void associerRessources(List<TacheRessource> ressources) {
+        String sql = "INSERT INTO TacheRessource (idTache, idRessource, quantiteAssocier) VALUES (?, ?, ?)";
+        try (   Connection conn = DataBaseConnection.getConnection();
+                PreparedStatement stmt = conn.prepareStatement(sql)) {
+            for (TacheRessource tr : ressources) {
+                stmt.setInt(1, tr.getIdTache());
+                stmt.setInt(2, tr.getIdRessource());
+                stmt.setInt(3, tr.getQuantiteAssocier());
+                stmt.addBatch();
+            }
+            stmt.executeBatch();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 }
