@@ -77,4 +77,16 @@ public class Projet {
     public void setDescriptionProjet(String descriptionProjet) {
         this.descriptionProjet = descriptionProjet;
     }
+
+    @Override
+    public String toString() {
+        return "Projet{" +
+                "idProjet=" + idProjet +
+                ", NomProjet='" + NomProjet + '\'' +
+                ", dateDebutProjrt=" + dateDebutProjrt +
+                ", dateFinProjet=" + dateFinProjet +
+                ", budget=" + budget +
+                ", descriptionProjet='" + descriptionProjet + '\'' +
+                '}';
+    }
 }

@@ -22,6 +22,7 @@ public class servletAddTache extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         int idProjet = Integer.parseInt(req.getParameter("idProjet"));
+        System.out.println("id projet pour ajouter tache est " +idProjet);
         String description = req.getParameter("descriptionTache");
         Date dateDebut = Date.valueOf(req.getParameter("dateDebut"));
         Date dateFin = Date.valueOf(req.getParameter("dateFin"));
@@ -43,12 +44,12 @@ public class servletAddTache extends HttpServlet {
 
                     if (quantite > 0) {
                         ressourcesAssociees.add(new TacheRessource(idTache, idRessource, quantite));
-                        ressourcesDao.mettreAJourQuantite(idRessource, -quantite);
+                        ressourcesDao.mettreAJourQuantite(idRessource, quantite);
                     }
                 }
                 tacheDao.associerRessources(ressourcesAssociees);
             }
         }
-        resp.sendRedirect("afficherProjetDetails.jsp?idProjet=" + idProjet);
+        resp.sendRedirect("afficheTacheProjet.jsp");
     }
 }

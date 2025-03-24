@@ -17,11 +17,20 @@ import java.util.List;
 public class LoadResourcesServlet extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
+        Connection connection = DataBaseConnection.getConnection();
         RessourcesDao ressourceDao = new RessourcesDao();
         List<Ressource> ressources = ressourceDao.getAllRessources();
+        int idProjet = Integer.parseInt(request.getParameter("idProjet"));
 
-        request.setAttribute("ressources", ressources);
+        if (ressources != null && !ressources.isEmpty()) {
+            System.out.println("Ressources trouvées : " + ressources.size());
+        } else {
+            System.out.println("Aucune ressource trouvée.");
+        }
+
+        request.setAttribute("ressourcess", ressources);
+        request.setAttribute("idProjet",idProjet);
+
 
         for (Ressource r : ressources){
 

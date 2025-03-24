@@ -9,7 +9,6 @@ public class Tache {
     private Date dateFin;
     private int idProjet;
 
-
     //constructors
 
     public Tache(String descriptionTache, Date dateDebut, Date dateFin, int idProjet) {
@@ -39,6 +38,7 @@ public class Tache {
 
     public String getDescriptionTache() {
         return descriptionTache;
+
     }
 
     public void setDescriptionTache(String descriptionTache) {

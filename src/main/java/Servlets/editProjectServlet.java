@@ -17,6 +17,7 @@ public class editProjectServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         int idProjet = Integer.parseInt(req.getParameter("idProjet"));
+        System.out.println("id projet pour modifier est "+idProjet);
         String nomProjet = req.getParameter("nomProjet");
         Date dateDebut = Date.valueOf(req.getParameter("dateDebut"));
         Date dateFin = Date.valueOf(req.getParameter("dateFin"));

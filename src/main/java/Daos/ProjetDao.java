@@ -45,17 +45,17 @@ public class ProjetDao {
 
   //fonction pour afficher la liste des projet
 
-  public static List displayProjetDetailsByName(String nomProjet){
-        List<Projet> projets = new ArrayList<>();
-        String query = "select * from Projets where NomProjet = ?";
+  public static Projet displayProjetDetailsById(int  id){
+        Projet projet=null ;
+        String query = "select * from Projets where idProjet = ?";
 
         try{
             Connection con = DataBaseConnection.getConnection();
            PreparedStatement pst = con.prepareStatement(query);
-           pst.setString(1,nomProjet);
+           pst.setInt(1,id);
            ResultSet rs = pst.executeQuery();
            while (rs.next()){
-               Projet projet = new Projet(
+               projet = new Projet(
                        rs.getInt("idProjet"),
                        rs.getString("NomProjet"),
                        rs.getDate("dateDebutProjet"),
@@ -63,7 +63,7 @@ public class ProjetDao {
                        rs.getDouble("budget"),
                        rs.getString("descriptionProjet")
                );
-               projets.add(projet);
+              return projet;
            }
 
         } catch (SQLException e) {
@@ -71,13 +71,13 @@ public class ProjetDao {
         }
 
 
-        return projets;
+        return projet;
   }
 
   public static List displayProjectName(){
         List<Projet> projetNames = new ArrayList<>();
 
-        String query ="select NomProjet  from Projets";
+        String query ="select NomProjet , idProjet from Projets";
         try {
             Connection con = DataBaseConnection.getConnection();
             Statement stmt = con.createStatement();
@@ -85,6 +85,7 @@ public class ProjetDao {
             while(rs.next()){
                 Projet projet = new Projet();
                 projet.setNomProjet(rs.getString("NomProjet"));
+                projet.setIdProjet(Integer.parseInt(rs.getString("idProjet")));
                 projetNames.add(projet);
             }
         } catch (SQLException e) {
