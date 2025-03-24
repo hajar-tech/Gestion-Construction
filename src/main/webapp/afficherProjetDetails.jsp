@@ -15,10 +15,15 @@
     %>
 
 
-     <%
-                Projet p = (Projet) request.getAttribute("projects");
-
-            %>
+   <%
+       Projet p = (Projet) request.getAttribute("projects");
+          System.out.println(p);
+       if (p != null) {
+           out.println("Projet chargé dans la JSP : " + p.getNomProjet());
+       } else {
+           out.println("ERREUR : Le projet n'a pas été transmis à la JSP.");
+       }
+   %>
 
 <!DOCTYPE html>
 <html lang="fr">
@@ -88,10 +93,7 @@
 
                     <!-- Bouton pour ouvrir la modale ajoute tache -->
 
-
-
-
-                        <button type="submit"  onclick="openModalAjouteTache()" class="text-green-500 hover:text-green-700 transition"  >
+                        <button  onclick="openModalAjouteTache(<%= p.getIdProjet() %>)" class="text-green-500 hover:text-green-700 transition"  >
                             ➕
                         </button>
 
@@ -149,7 +151,9 @@
         <h2 class="text-2xl font-bold mb-4">Ajouter une Tâche</h2>
 
         <form action="addTaskServlet" method="post">
-           <input type="hidden" id="idProjet" name="idProjet"  value="<%= p.getIdProjet() %>">
+
+        <input type="hidden" id="idProjet" name="idProjet">
+
 
             <label class="block">Description de la Tâche :</label>
             <input type="text" name="descriptionTache" class="w-full border p-2 rounded" required>
@@ -165,7 +169,7 @@
                 <% if (ressources != null) {
                     for (Ressource r : ressources) { %>
                         <div class="flex items-center space-x-2">
-                            <input type="checkbox" name="ressources" value="<%= r.getIdRessource() %>">
+                            <input type="checkbox" name="idRessource" value="<%= r.getIdRessource() %>">
                             <span><%= r.getNomRessource() %> (Dispo: <%= r.getQuantite() %>)</span>
                             <input type="number" name="quantite_<%= r.getIdRessource() %>" min="1" max="<%= r.getQuantite() %>" placeholder="Quantité" class="border p-1 w-20">
                         </div>
@@ -175,7 +179,7 @@
             </div>
 
             <div class="mt-4 flex justify-end space-x-3">
-                <button type="button" class="bg-gray-400 px-4 py-2 rounded-lg" onclick="closeModal()">Annuler</button>
+                <button type="button" class="bg-gray-400 px-4 py-2 rounded-lg" onclick="closeModalAjouteTache()">Annuler</button>
                 <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600">Ajouter</button>
             </div>
         </form>
@@ -201,7 +205,8 @@ function openModal(id, nom, dateDebut, dateFin, budget, description) {
         document.getElementById("editModal").classList.add("hidden");
     }
 
-function openModalAjouteTache() {
+function openModalAjouteTache(id) {
+        document.getElementById("idProjet").value = id;
         document.getElementById("modalAjoutTache").classList.remove("hidden");
     }
 
@@ -210,12 +215,7 @@ function openModalAjouteTache() {
     }
 
 
- window.onload = function () {
-        var ressources = "<%= ressources != null && !ressources.isEmpty() %>";
-        if (ressources === "true") {
-            document.getElementById("modalAjoutTache").style.display = "block";
-        }
-    };
+
 
 
 

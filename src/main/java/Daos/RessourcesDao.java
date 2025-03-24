@@ -114,7 +114,7 @@ public class RessourcesDao {
 
 
     public void mettreAJourQuantite(int idRessource, int quantite) {
-        String sql = "UPDATE Ressources SET quantite = quantite + ? WHERE idRessource = ?";
+        String sql = "UPDATE Ressources SET quantite = quantite - ? WHERE idRessource = ?";
         try (   Connection conn = DataBaseConnection.getConnection();
                 PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setInt(1, quantite);

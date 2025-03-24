@@ -56,7 +56,7 @@ public class ProjetDao {
            ResultSet rs = pst.executeQuery();
            while (rs.next()){
                projet = new Projet(
-                       id,
+                       rs.getInt("idProjet"),
                        rs.getString("NomProjet"),
                        rs.getDate("dateDebutProjet"),
                        rs.getDate("dateFinProjet"),

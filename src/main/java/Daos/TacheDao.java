@@ -24,6 +24,7 @@ public class TacheDao {
             ResultSet rs = pst.getGeneratedKeys();
             if(rs.next()){
                 idTache = rs.getInt(1);
+                System.out.println("id tache est " +idTache);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -34,16 +35,17 @@ public class TacheDao {
 
 
     public void associerRessources(List<TacheRessource> ressources) {
-        String sql = "INSERT INTO TacheRessource (idTache, idRessource, quantiteAssocier) VALUES (?, ?, ?)";
-        try (   Connection conn = DataBaseConnection.getConnection();
-                PreparedStatement stmt = conn.prepareStatement(sql)) {
-            for (TacheRessource tr : ressources) {
-                stmt.setInt(1, tr.getIdTache());
-                stmt.setInt(2, tr.getIdRessource());
-                stmt.setInt(3, tr.getQuantiteAssocier());
-                stmt.addBatch();
+        String sql = "INSERT INTO TacheRessources (idTache, idRessource, quantiteAssocier) VALUES (?, ?, ?)";
+        try (   Connection conn = DataBaseConnection.getConnection()) {
+            try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+                for (TacheRessource tr : ressources) {
+                    stmt.setInt(1, tr.getIdTache());
+                    stmt.setInt(2, tr.getIdRessource());
+                    stmt.setInt(3, tr.getQuantiteAssocier());
+                    stmt.executeUpdate();
+                }
+
             }
-            stmt.executeBatch();
         } catch (SQLException e) {
             e.printStackTrace();
         }
