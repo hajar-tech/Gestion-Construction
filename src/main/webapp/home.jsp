@@ -59,7 +59,8 @@
                         <h3 class="text-xl font-bold text-black text-center"><%= p.getNomProjet() %></h3>
 
                         <form action="displayProjectByName" method="post" class="mt-4 text-center">
-                            <input type="hidden" name="nomProjet" value="<%= p.getNomProjet() %>">
+                            <input type="hidden" name="idProjet" value="<%= p.getIdProjet() %>">
+
                             <button type="submit" class="bg-black text-yellow-400 px-4 py-2 rounded-lg hover:bg-gray-900 transition">
                                 Détails
                             </button>

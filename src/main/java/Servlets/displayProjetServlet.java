@@ -17,9 +17,8 @@ public class displayProjetServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String nomProjet = req.getParameter("nomProjet");
-
-        List<Projet> projets = ProjetDao.displayProjetDetailsByName(nomProjet);
+        int idProjet = Integer.parseInt(req.getParameter("idProjet"));
+        Projet projets = ProjetDao.displayProjetDetailsById(idProjet);
         req.setAttribute("projects", projets);
         req.getRequestDispatcher("afficherProjetDetails.jsp").forward(req , resp);
     }

@@ -22,6 +22,7 @@ public class servletAddTache extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         int idProjet = Integer.parseInt(req.getParameter("idProjet"));
+        System.out.println(idProjet);
         String description = req.getParameter("descriptionTache");
         Date dateDebut = Date.valueOf(req.getParameter("dateDebut"));
         Date dateFin = Date.valueOf(req.getParameter("dateFin"));

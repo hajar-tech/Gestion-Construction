@@ -127,7 +127,7 @@ public class RessourcesDao {
 
 
 
-    public List<Ressource> getAllRessources() {
+    public static List<Ressource> getAllRessources() {
         List<Ressource> ressources = new ArrayList<>();
         String sql = "SELECT * FROM Ressources";
 

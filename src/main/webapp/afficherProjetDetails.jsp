@@ -1,13 +1,24 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 
-    <%@ page import = "Models.Projet ,Models.Ressource , java.util.*" %>
+    <%@ page import = "Models.Projet ,Models.Ressource , java.util.* ,Daos.RessourcesDao" %>
     <%@ page import="java.util.List" %>
 
 
     <%
-        List<Ressource> ressources = (List<Ressource>) request.getAttribute("ressources");
+        List<Ressource> ressources = RessourcesDao.getAllRessources();
+         if (ressources != null && !ressources.isEmpty()) {
+                System.out.println("Ressources reçues : " + ressources.size());
+            } else {
+                System.out.println("Pas de ressources reçues.");
+            }
     %>
+
+
+     <%
+                Projet p = (Projet) request.getAttribute("projects");
+
+            %>
 
 <!DOCTYPE html>
 <html lang="fr">
@@ -42,13 +53,14 @@
 
 
         <%
-            List<Projet> projets = (List<Projet>) request.getAttribute("projects");
-            if (projets != null && !projets.isEmpty()) {
+
+            if (p != null) {
         %>
         <ul class="bg-white mt-3 shadow-md rounded-lg divide-y divide-gray-200">
-            <% for (Projet p : projets) { %>
+
             <li class="p-4 flex items-center justify-between hover:bg-gray-100">
                 <div>
+                     <h2 class="text-lg font-semibold text-black"><%= p.getIdProjet() %></h2>
                     <h2 class="text-lg font-semibold text-black"><%= p.getNomProjet() %></h2>
                     <p class="text-gray-600 mt-3 text-sm"><strong>Date Début :</strong> <%= p.getDateDebutProjrt() %></p>
                     <p class="text-gray-600 mt-3 text-sm"><strong>Date Fin :</strong> <%= p.getDateFinProjet() %></p>
@@ -76,16 +88,17 @@
 
                     <!-- Bouton pour ouvrir la modale ajoute tache -->
 
-                    <form action="loadResources" method="get">
-                        <button type="submit" class="text-green-500 hover:text-green-700 transition" onclick="openModalAjoutTache('<%= p.getIdProjet() %>')">
+
+
+
+                        <button type="submit"  onclick="openModalAjouteTache()" class="text-green-500 hover:text-green-700 transition"  >
                             ➕
                         </button>
-                    </form>
 
 
                 </div>
             </li>
-            <% } %>
+
         </ul>
 
         <% } else { %>
@@ -136,7 +149,7 @@
         <h2 class="text-2xl font-bold mb-4">Ajouter une Tâche</h2>
 
         <form action="addTaskServlet" method="post">
-            <input type="hidden" name="idProjet" id="idProjet">
+           <input type="hidden" id="idProjet" name="idProjet"  value="<%= p.getIdProjet() %>">
 
             <label class="block">Description de la Tâche :</label>
             <input type="text" name="descriptionTache" class="w-full border p-2 rounded" required>
@@ -187,9 +200,9 @@ function openModal(id, nom, dateDebut, dateFin, budget, description) {
     function closeModal() {
         document.getElementById("editModal").classList.add("hidden");
     }
-    function openModalAjoutTache(idProjet) {
+
+function openModalAjouteTache() {
         document.getElementById("modalAjoutTache").classList.remove("hidden");
-        document.getElementById("idProjet").value = idProjet;  // Remplit le champ caché avec l'ID du projet
     }
 
     function closeModalAjouteTache() {
@@ -197,7 +210,12 @@ function openModal(id, nom, dateDebut, dateFin, budget, description) {
     }
 
 
-
+ window.onload = function () {
+        var ressources = "<%= ressources != null && !ressources.isEmpty() %>";
+        if (ressources === "true") {
+            document.getElementById("modalAjoutTache").style.display = "block";
+        }
+    };
 
 
 
